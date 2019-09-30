@@ -1,0 +1,28 @@
+---
+title: "Gapminder"
+author: "David Kane"
+date: "9/26/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(gapminder)
+library(tidyverse)
+
+```
+
+Scatter plot for 1962 of GDP versus life expectancy
+
+```{r make_plot}
+gapminder %>% 
+  filter(year == 1962) %>% 
+  filter(continent == "Europe") %>% 
+  ggplot(aes(x = gdpPercap, y = lifeExp, size = pop)) + 
+    geom_point() 
+    scale_x_log10() +
+    labs(title = "World in 1962",
+         x = "GDP per capita",
+         y = "Life Expectancy")
+  
+```
