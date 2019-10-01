@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = FALSE)
 library(gapminder)
 library(tidyverse)
-
+library(gganimate)
 ```
 
 Remember what [we want](http://rpubs.com/dkane/gganimate). You don't need to do these in order. Work on what you like first. Hints:
@@ -30,14 +30,23 @@ Remember what [we want](http://rpubs.com/dkane/gganimate). You don't need to do 
 
 
 ```{r make_plot}
+
+continents <- c("Americas","Africa","Asia")
+continent_levels <- c("Americas","Africa","Asia")
+
+continents_3 <- factor(continents, levels = continent_levels)
+
 gapminder %>% 
-  filter(year == 1962) %>% 
-  filter(continent == "Europe") %>% 
-  ggplot(aes(x = gdpPercap, y = lifeExp, size = pop)) + 
-    geom_point() +
+  filter(continent %in% c("Americas","Africa","Asia")) %>% 
+  ggplot(aes(x = gdpPercap, y = lifeExp, size = pop, color = country, alpha = .8)) + 
+    geom_point(show.legend = FALSE) +
     scale_x_log10() +
     labs(title = "World in 1962",
          x = "GDP Per Capita",
-         y = "Life Expectancy")
+         y = "Life Expectancy") +
+      facet_wrap(~continent) +
+        scale_color_manual(values = country_colors) +
+          transition_time(year)
+
   
 ```
